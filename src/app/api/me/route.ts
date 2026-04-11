@@ -56,7 +56,7 @@ export async function GET() {
   return NextResponse.json({
     profile: {
       id: profile.id,
-      email: profile.email,
+      username: profile.username,
       display_name: profile.display_name,
       slot_number: profile.slot_number,
       is_admin: profile.is_admin,

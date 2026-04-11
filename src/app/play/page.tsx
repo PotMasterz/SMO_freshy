@@ -54,7 +54,7 @@ export default async function PlayPage() {
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-indigo-400">SMO Freshy</p>
           <h1 className="mt-1 text-3xl font-bold">
-            {profile.display_name || profile.email}
+            {profile.display_name || profile.username}
           </h1>
           <p className="mt-1 text-sm text-slate-400">
             Solved {solvedCount} / {dtos.length} riddles

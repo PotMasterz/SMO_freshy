@@ -10,6 +10,9 @@ the website. The site checks it against per-player codes set by an admin.
 - **Solved state persists** across refresh / logout / new device.
 - A solved slot is only reset when the admin **changes that slot's passcode**.
 - No public sign-up. Admins create the 7 player accounts in the dashboard.
+- **No email required** — players log in with a username + password only.
+  Internally a synthetic email (`username@smo.game`) is used for Supabase Auth,
+  but players never see or type it.
 - The riddle text itself lives **on paper at the venue** — the website only
   stores the answer codes.
 
@@ -65,9 +68,9 @@ Players can now sign in **from any device on any network**.
    `/admin`.
 2. For each of the 7 players:
    - Click **Create player** in an empty slot.
-   - Enter their email + a password (write it on the slip you'll hand them).
+   - Enter a **username** + a password (write both on the slip you'll hand them). No email needed.
    - On the next screen, set the 4-digit passcode for each of their 5 riddles.
-3. Hand each player their email + password slip together with their paper
+3. Hand each player their **username + password slip** together with their paper
    riddles.
 4. Players sign in at `/login` and start cracking codes.
 5. Watch progress live from `/admin`. Use the **Reset** button if a player gets

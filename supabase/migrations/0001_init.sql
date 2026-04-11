@@ -1,5 +1,8 @@
 -- SMO_freshy passcode game schema
 -- Run this once in the Supabase SQL editor for a fresh project.
+--
+-- NOTE: Supabase Auth requires an email internally. We store
+-- {username}@smo.game as the email — users only ever see/type their username.
 
 -- Required for gen_random_uuid()
 create extension if not exists pgcrypto;
@@ -10,7 +13,7 @@ create extension if not exists pgcrypto;
 
 create table if not exists public.profiles (
   id           uuid primary key references auth.users(id) on delete cascade,
-  email        text not null,
+  username     text unique not null default '',   -- the display / login name
   display_name text,
   slot_number  int unique check (slot_number is null or (slot_number between 1 and 7)),
   is_admin     boolean not null default false,
@@ -59,8 +62,9 @@ security definer
 set search_path = public
 as $$
 begin
-  insert into public.profiles (id, email)
-  values (new.id, new.email)
+  -- Derive username from internal email (format: username@smo.game)
+  insert into public.profiles (id, username)
+  values (new.id, split_part(new.email, '@', 1))
   on conflict (id) do nothing;
   return new;
 end;

@@ -19,7 +19,7 @@ export default async function EditPlayerPage({
 
   const { data: player } = await admin
     .from("profiles")
-    .select("id, email, display_name, slot_number, is_admin")
+    .select("id, username, display_name, slot_number, is_admin")
     .eq("id", params.id)
     .single();
   if (!player || player.is_admin) notFound();
@@ -41,8 +41,8 @@ export default async function EditPlayerPage({
       <p className="text-xs uppercase tracking-[0.3em] text-indigo-400">
         Slot #{player.slot_number}
       </p>
-      <h1 className="mt-1 text-3xl font-bold">{player.display_name || player.email}</h1>
-      <p className="mt-1 text-sm text-slate-400">{player.email}</p>
+      <h1 className="mt-1 text-3xl font-bold">{player.display_name || player.username}</h1>
+      <p className="mt-1 font-mono text-sm text-slate-400">@{player.username}</p>
 
       <p className="mt-6 rounded-lg border border-slate-800 bg-slate-900/40 p-4 text-sm text-slate-300">
         Set or change the 4-digit passcode for each of this player&apos;s 5 riddles. The riddle

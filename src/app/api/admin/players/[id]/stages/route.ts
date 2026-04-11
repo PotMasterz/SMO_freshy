@@ -15,7 +15,7 @@ export async function GET(
 
   const { data: player, error: playerErr } = await admin
     .from("profiles")
-    .select("id, email, display_name, slot_number, is_admin")
+    .select("id, username, display_name, slot_number, is_admin")
     .eq("id", params.id)
     .single();
   if (playerErr || !player) {

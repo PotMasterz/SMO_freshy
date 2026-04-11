@@ -2,7 +2,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export type CallerProfile = {
   id: string;
-  email: string;
+  username: string;
   display_name: string | null;
   slot_number: number | null;
   is_admin: boolean;
@@ -20,18 +20,25 @@ export async function getCallerProfile(): Promise<CallerProfile | null> {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id, email, display_name, slot_number, is_admin")
+    .select("id, username, display_name, slot_number, is_admin")
     .eq("id", user.id)
     .single();
 
   if (!profile) {
+    // Fallback: derive username from internal email (username@smo.game)
+    const username = (user.email ?? "").split("@")[0];
     return {
       id: user.id,
-      email: user.email ?? "",
+      username,
       display_name: null,
       slot_number: null,
       is_admin: false,
     };
   }
   return profile as CallerProfile;
+}
+
+/** Converts a plain username into the internal Supabase Auth email. */
+export function usernameToEmail(username: string): string {
+  return `${username.toLowerCase().trim()}@smo.game`;
 }
