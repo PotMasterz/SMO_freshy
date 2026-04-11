@@ -14,7 +14,7 @@ export default async function AdminHome() {
 
   type PlayerRow = {
     id: string;
-    email: string;
+    username: string;
     display_name: string | null;
     slot_number: number | null;
   };
@@ -22,7 +22,7 @@ export default async function AdminHome() {
   const admin = createSupabaseAdminClient();
   const { data: players } = (await admin
     .from("profiles")
-    .select("id, email, display_name, slot_number")
+    .select("id, username, display_name, slot_number")
     .eq("is_admin", false)
     .order("slot_number", { ascending: true })) as { data: PlayerRow[] | null };
 
@@ -62,8 +62,8 @@ export default async function AdminHome() {
           <thead className="bg-slate-900 text-xs uppercase tracking-wider text-slate-400">
             <tr>
               <th className="px-4 py-3">Slot</th>
-              <th className="px-4 py-3">Player</th>
-              <th className="px-4 py-3">Email</th>
+              <th className="px-4 py-3">Username</th>
+              <th className="px-4 py-3">Display name</th>
               <th className="px-4 py-3">Solved</th>
               <th className="px-4 py-3 text-right">Actions</th>
             </tr>
@@ -76,8 +76,8 @@ export default async function AdminHome() {
                   <td className="px-4 py-3 font-mono text-slate-400">#{slot}</td>
                   {p ? (
                     <>
-                      <td className="px-4 py-3 font-medium">{p.display_name || "—"}</td>
-                      <td className="px-4 py-3 text-slate-400">{p.email}</td>
+                      <td className="px-4 py-3 font-mono font-medium">{p.username}</td>
+                      <td className="px-4 py-3 text-slate-300">{p.display_name || "—"}</td>
                       <td className="px-4 py-3">
                         <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold text-emerald-300">
                           {solvedCounts.get(p.id) ?? 0} / 5

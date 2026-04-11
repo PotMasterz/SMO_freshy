@@ -11,7 +11,7 @@ export default function NewPlayerForm({
   initialSlot?: number;
 }) {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [slot, setSlot] = useState<number>(initialSlot ?? freeSlots[0] ?? 1);
@@ -34,7 +34,7 @@ export default function NewPlayerForm({
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email,
+        username,
         password,
         display_name: displayName,
         slot_number: slot,
@@ -42,7 +42,13 @@ export default function NewPlayerForm({
     });
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error || "Failed to create player");
+      const messages: Record<string, string> = {
+        username_invalid: "Username must be 3–20 characters, letters/numbers/underscore/hyphen only.",
+        username_taken: "That username is already taken.",
+        password_too_short: "Password must be at least 6 characters.",
+        slot_taken: "That slot is already taken.",
+      };
+      setError(messages[data.error] || data.error || "Failed to create player");
       setBusy(false);
       return;
     }
@@ -53,29 +59,35 @@ export default function NewPlayerForm({
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-1">
-        <label className="block text-sm font-medium text-slate-300">Display name</label>
+        <label className="block text-sm font-medium text-slate-300">Username</label>
         <input
           type="text"
           required
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
+          pattern="[a-zA-Z0-9_\-]{3,20}"
+          title="3–20 characters: letters, numbers, _ or -"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 font-mono text-slate-100 outline-none focus:border-indigo-500"
+        />
+        <p className="text-xs text-slate-500">
+          Letters, numbers, _ or – only (3–20 chars). This is what the player types to log in.
+        </p>
+      </div>
+      <div className="space-y-1">
+        <label className="block text-sm font-medium text-slate-300">Display name (optional)</label>
+        <input
+          type="text"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
+          placeholder="Same as username if left blank"
           className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 outline-none focus:border-indigo-500"
         />
       </div>
       <div className="space-y-1">
-        <label className="block text-sm font-medium text-slate-300">Email</label>
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 outline-none focus:border-indigo-500"
-        />
-      </div>
-      <div className="space-y-1">
-        <label className="block text-sm font-medium text-slate-300">
-          Password (min 6 chars)
-        </label>
+        <label className="block text-sm font-medium text-slate-300">Password (min 6 chars)</label>
         <input
           type="text"
           required

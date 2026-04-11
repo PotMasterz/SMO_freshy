@@ -4,9 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
+function usernameToEmail(username: string): string {
+  return `${username.toLowerCase().trim()}@smo.game`;
+}
+
 export default function LoginForm({ next }: { next?: string }) {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -15,15 +19,16 @@ export default function LoginForm({ next }: { next?: string }) {
     e.preventDefault();
     setBusy(true);
     setError(null);
+
+    const email = usernameToEmail(username);
     const supabase = createSupabaseBrowserClient();
     const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
     if (signInError) {
-      setError(signInError.message);
+      setError("Incorrect username or password.");
       setBusy(false);
       return;
     }
 
-    // Decide where to land. Ask the server which page is appropriate (admin vs play).
     const meRes = await fetch("/api/me", { cache: "no-store" });
     if (meRes.ok) {
       const me = await meRes.json();
@@ -38,13 +43,16 @@ export default function LoginForm({ next }: { next?: string }) {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-1">
-        <label className="block text-sm font-medium text-slate-300">Email</label>
+        <label className="block text-sm font-medium text-slate-300">Username</label>
         <input
-          type="email"
+          type="text"
           required
-          autoComplete="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          autoComplete="username"
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 outline-none focus:border-indigo-500"
         />
       </div>

@@ -19,7 +19,7 @@ export default async function LoginPage({
           <p className="text-xs uppercase tracking-[0.3em] text-indigo-400">SMO Freshy</p>
           <h1 className="text-2xl font-semibold">Log in</h1>
           <p className="text-sm text-slate-400">
-            Enter the email and password your organiser gave you.
+            Enter the username and password your organiser gave you.
           </p>
         </div>
         <LoginForm next={searchParams.next} />
