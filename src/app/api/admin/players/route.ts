@@ -123,7 +123,7 @@ export async function POST(request: Request) {
   }
 
   // Seed 5 empty stages for the new player.
-  const stageRows = [1, 2, 3, 4, 5].map((order_index) => ({
+  const stageRows = [1, 2, 3, 4, 5, 6].map((order_index) => ({
     owner_user_id: userId,
     order_index,
     label: `Riddle ${order_index}`,

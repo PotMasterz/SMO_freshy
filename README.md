@@ -4,7 +4,7 @@ A passcode-entry web app for the freshers' / orientation event. Players each
 get **5 paper riddles**; for each riddle they punch a **4-digit passcode** into
 the website. The site checks it against per-player codes set by an admin.
 
-- **7 fixed players**, each with their own 5 riddle slots (35 unique passcodes total).
+- **7 fixed players**, each starting with 6 riddle slots (admin can add more, up to 20).
 - **3 attempts** per slot, then a **60-second cooldown** for *that slot only* —
   the player can keep trying their other riddles.
 - **Solved state persists** across refresh / logout / new device.
@@ -69,7 +69,7 @@ Players can now sign in **from any device on any network**.
 2. For each of the 7 players:
    - Click **Create player** in an empty slot.
    - Enter a **username** + a password (write both on the slip you'll hand them). No email needed.
-   - On the next screen, set the 4-digit passcode for each of their 5 riddles.
+   - On the next screen, set the 4-digit passcode for each riddle. Use **+ Add riddle** if you need more than 6.
 3. Hand each player their **username + password slip** together with their paper
    riddles.
 4. Players sign in at `/login` and start cracking codes.
@@ -83,7 +83,7 @@ Players can now sign in **from any device on any network**.
 | --- | --- | --- |
 | `/` | Anyone | Landing → Login CTA |
 | `/login` | Anyone | Email/password login |
-| `/play` | Player | The 5 stage cards |
+| `/play` | Player | The riddle stage cards |
 | `/admin` | Admin | Player roster |
 | `/admin/players/new` | Admin | Create a new player |
 | `/admin/players/[id]` | Admin | Set passcodes for that player |

@@ -31,10 +31,18 @@ export default async function AdminHome() {
     if (p.slot_number != null) playersBySlot.set(p.slot_number, p);
   }
 
-  // Solved counts
+  // Solved counts + total stage counts per player
   const ids = (players ?? []).map((p) => p.id);
   const solvedCounts = new Map<string, number>();
+  const totalCounts = new Map<string, number>();
   if (ids.length > 0) {
+    const { data: stages } = await admin
+      .from("stages")
+      .select("owner_user_id")
+      .in("owner_user_id", ids);
+    for (const row of stages ?? []) {
+      totalCounts.set(row.owner_user_id, (totalCounts.get(row.owner_user_id) ?? 0) + 1);
+    }
     const { data: progress } = await admin
       .from("stage_progress")
       .select("user_id, solved")
@@ -80,7 +88,7 @@ export default async function AdminHome() {
                       <td className="px-4 py-3 text-slate-300">{p.display_name || "—"}</td>
                       <td className="px-4 py-3">
                         <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold text-emerald-300">
-                          {solvedCounts.get(p.id) ?? 0} / 5
+                          {solvedCounts.get(p.id) ?? 0} / {totalCounts.get(p.id) ?? 0}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-right">
