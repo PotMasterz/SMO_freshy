@@ -23,7 +23,7 @@ create table if not exists public.profiles (
 create table if not exists public.stages (
   id               uuid primary key default gen_random_uuid(),
   owner_user_id    uuid not null references public.profiles(id) on delete cascade,
-  order_index      int  not null check (order_index between 1 and 5),
+  order_index      int  not null check (order_index between 1 and 20),
   label            text not null default '',
   passcode_hash    text,
   max_attempts     int  not null default 3,

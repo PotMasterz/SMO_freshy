@@ -50,3 +50,52 @@ export async function GET(
 
   return NextResponse.json({ player, stages: sanitized });
 }
+
+export async function POST(
+  _request: Request,
+  { params }: { params: { id: string } },
+) {
+  const auth = await requireAdmin();
+  if (!auth.ok) return auth.response;
+
+  const admin = createSupabaseAdminClient();
+
+  const { data: player } = await admin
+    .from("profiles")
+    .select("id")
+    .eq("id", params.id)
+    .eq("is_admin", false)
+    .single();
+  if (!player) {
+    return NextResponse.json({ error: "not_found" }, { status: 404 });
+  }
+
+  const { data: existing } = await admin
+    .from("stages")
+    .select("order_index")
+    .eq("owner_user_id", params.id)
+    .order("order_index", { ascending: false })
+    .limit(1)
+    .single();
+
+  const nextIndex = (existing?.order_index ?? 0) + 1;
+  if (nextIndex > 20) {
+    return NextResponse.json({ error: "max_20_riddles" }, { status: 400 });
+  }
+
+  const { data: stage, error } = await admin
+    .from("stages")
+    .insert({
+      owner_user_id: params.id,
+      order_index: nextIndex,
+      label: `Riddle ${nextIndex}`,
+      passcode_hash: null,
+      max_attempts: 3,
+      cooldown_seconds: 60,
+    })
+    .select("id, order_index, label")
+    .single();
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ stage });
+}

@@ -3,6 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import { getCallerProfile } from "@/lib/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import EditStageRow from "./EditStageRow";
+import AddStageButton from "./AddStageButton";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +46,7 @@ export default async function EditPlayerPage({
       <p className="mt-1 font-mono text-sm text-slate-400">@{player.username}</p>
 
       <p className="mt-6 rounded-lg border border-slate-800 bg-slate-900/40 p-4 text-sm text-slate-300">
-        Set or change the 4-digit passcode for each of this player&apos;s 5 riddles. The riddle
+        Set or change the 4-digit passcode for each of this player&apos;s riddles. The riddle
         text itself stays on paper — the website only checks the codes. <br />
         <span className="text-slate-400">
           Changing a passcode resets that riddle&apos;s progress for the player.
@@ -66,6 +67,7 @@ export default async function EditPlayerPage({
             }}
           />
         ))}
+        <AddStageButton playerId={params.id} />
       </div>
     </main>
   );
