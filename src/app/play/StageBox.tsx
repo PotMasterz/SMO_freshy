@@ -23,7 +23,7 @@ export default function StageBox({ initial }: { initial: StageDTO }) {
 
   const solved = initial.solved;
   const locked = secondsLeft > 0;
-  const label = initial.label || `ข้อที่ ${initial.order_index}`;
+  const label = `ข้อที่ ${initial.order_index}`;
   const minutes = Math.floor(secondsLeft / 60);
   const seconds = secondsLeft % 60;
   const timerText = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
