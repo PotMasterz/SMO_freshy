@@ -8,5 +8,37 @@
 
 body {
   @apply bg-slate-950 text-slate-100;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Sarabun", "TH Sarabun New", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+/* Green glow overlay — correct answer */
+@keyframes greenGlow {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.animate-green-glow {
+  animation: greenGlow 10s ease-in-out forwards;
+}
+
+/* Red glow overlay — last wrong attempt */
+@keyframes redGlow {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.animate-red-glow {
+  animation: redGlow 3s ease-in-out forwards;
+}
+
+/* Shake for wrong attempt */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
 }
