@@ -16,7 +16,7 @@ type StageInfo = {
   seconds_remaining: number;
 };
 
-type Overlay = "none" | "correct" | "wrong-last";
+type Overlay = "none" | "checking" | "correct" | "wrong-last";
 
 export default function PasscodeEntryPage() {
   const router = useRouter();
@@ -89,6 +89,7 @@ export default function PasscodeEntryPage() {
     if (guess.length !== 4) return;
     setBusy(true);
     setMessage(null);
+    setOverlay("checking");
 
     try {
       const res = await fetch(`/api/stages/${stageId}/attempt`, {
@@ -102,6 +103,7 @@ export default function PasscodeEntryPage() {
         setOverlay("correct");
         setTimeout(goBack, 10000);
       } else if (data.status === "wrong") {
+        setOverlay("none");
         setShake(true);
         setMessage("รหัสผิด");
         setDigits(["", "", "", ""]);
@@ -117,11 +119,14 @@ export default function PasscodeEntryPage() {
       } else if (data.status === "already_solved") {
         goBack();
       } else if (data.status === "not_ready") {
+        setOverlay("none");
         setMessage("ผู้จัดยังไม่ได้ตั้งรหัสข้อนี้");
       } else {
+        setOverlay("none");
         setMessage(data.error || "เกิดข้อผิดพลาด");
       }
     } catch {
+      setOverlay("none");
       setMessage("เครือข่ายมีปัญหา ลองใหม่");
     } finally {
       setBusy(false);
@@ -138,11 +143,19 @@ export default function PasscodeEntryPage() {
 
   if (!stage) return null;
 
-  const label = stage.label || `ข้อที่ ${stage.order_index}`;
+  const label = `ข้อที่ ${stage.order_index}`;
   const isFull = digits.every((d) => d !== "");
 
   return (
     <div className="relative flex min-h-screen flex-col">
+      {/* Checking overlay — waiting for server */}
+      {overlay === "checking" && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-sm">
+          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-slate-600 border-t-indigo-400" />
+          <p className="text-xl font-bold text-slate-200">กำลังตรวจสอบ…</p>
+        </div>
+      )}
+
       {/* Green overlay — correct answer */}
       {overlay === "correct" && (
         <div className="animate-green-glow fixed inset-0 z-50 flex flex-col items-center justify-center bg-emerald-600/90">

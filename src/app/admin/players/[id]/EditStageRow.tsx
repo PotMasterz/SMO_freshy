@@ -15,7 +15,7 @@ type Stage = {
 
 export default function EditStageRow({ stage }: { stage: Stage }) {
   const router = useRouter();
-  const [label, setLabel] = useState(stage.label || `Riddle ${stage.order_index}`);
+  const [label, setLabel] = useState(stage.label || `ข้อที่ ${stage.order_index}`);
   const [passcode, setPasscode] = useState("");
   const [editingCode, setEditingCode] = useState(!stage.passcode_set);
   const [busy, setBusy] = useState(false);
