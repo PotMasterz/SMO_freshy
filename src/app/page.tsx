@@ -11,17 +11,16 @@ export default async function HomePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
       <div className="max-w-xl space-y-6">
-        <p className="text-sm uppercase tracking-[0.3em] text-indigo-400">SMO Freshy</p>
-        <h1 className="text-4xl font-bold sm:text-5xl">Crack the codes.</h1>
-        <p className="text-slate-300">
-          Find the riddles around the venue, work out the 4-digit answer for each one, and punch
-          it in here.
+        <p className="text-sm font-bold uppercase tracking-[0.3em] text-indigo-400">SMO FRESHY</p>
+        <h1 className="text-4xl font-extrabold sm:text-5xl">ถอดรหัสให้ได้</h1>
+        <p className="text-lg text-slate-300">
+          หากล่องคำถามในห้องสมบัติ เพื่อใส่รหัสที่นี่
         </p>
         <Link
           href="/login"
-          className="inline-block rounded-lg bg-indigo-500 px-6 py-3 font-semibold text-white shadow-lg shadow-indigo-500/30 transition hover:bg-indigo-400"
+          className="inline-block rounded-lg bg-indigo-500 px-6 py-3 text-lg font-bold text-white shadow-lg shadow-indigo-500/30 transition hover:bg-indigo-400"
         >
-          Log in
+          เข้าสู่ระบบ
         </Link>
       </div>
     </main>

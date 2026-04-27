@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { getCallerProfile } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import StageCard, { type StageDTO } from "./StageCard";
+import type { StageDTO } from "./types";
+import StageBox from "./StageBox";
 import LogoutButton from "./LogoutButton";
 
 export const dynamic = "force-dynamic";
@@ -49,15 +50,15 @@ export default async function PlayPage() {
   const solvedCount = dtos.filter((d) => d.solved).length;
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-10">
-      <header className="mb-8 flex items-start justify-between gap-4">
+    <main className="mx-auto max-w-lg px-4 py-8">
+      <header className="mb-6 flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-indigo-400">SMO Freshy</p>
-          <h1 className="mt-1 text-3xl font-bold">
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-indigo-400">SMO FRESHY</p>
+          <h1 className="mt-1 text-2xl font-bold">
             {profile.display_name || profile.username}
           </h1>
           <p className="mt-1 text-sm text-slate-400">
-            Solved {solvedCount} / {dtos.length} riddles
+            แก้แล้ว {solvedCount} / {dtos.length} ข้อ
           </p>
         </div>
         <LogoutButton />
@@ -65,12 +66,12 @@ export default async function PlayPage() {
 
       {dtos.length === 0 ? (
         <p className="rounded-lg border border-slate-800 bg-slate-900/60 p-6 text-center text-slate-400">
-          No riddles set up yet. Ask your organiser.
+          ยังไม่มีข้อคำถาม กรุณาติดต่อผู้จัดงาน
         </p>
       ) : (
-        <div className="space-y-4">
+        <div className="grid grid-cols-3 gap-3">
           {dtos.map((dto) => (
-            <StageCard key={dto.id} initial={dto} />
+            <StageBox key={dto.id} initial={dto} />
           ))}
         </div>
       )}

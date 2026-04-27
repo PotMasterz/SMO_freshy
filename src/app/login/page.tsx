@@ -16,10 +16,10 @@ export default async function LoginPage({
     <main className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-sm space-y-6 rounded-2xl border border-slate-800 bg-slate-900/60 p-8 shadow-xl">
         <div className="space-y-2 text-center">
-          <p className="text-xs uppercase tracking-[0.3em] text-indigo-400">SMO Freshy</p>
-          <h1 className="text-2xl font-semibold">Log in</h1>
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-indigo-400">SMO FRESHY</p>
+          <h1 className="text-2xl font-bold">เข้าสู่ระบบ</h1>
           <p className="text-sm text-slate-400">
-            Enter the username and password your organiser gave you.
+            ใส่ชื่อผู้ใช้และรหัสผ่านที่ได้รับจากผู้จัดงาน
           </p>
         </div>
         <LoginForm next={searchParams.next} />

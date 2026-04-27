@@ -17,7 +17,7 @@ export default function LogoutButton() {
       onClick={logout}
       className="rounded-md border border-slate-700 px-3 py-1.5 text-sm text-slate-300 transition hover:border-slate-500 hover:text-white"
     >
-      Log out
+      ออกจากระบบ
     </button>
   );
 }

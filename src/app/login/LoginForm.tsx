@@ -24,7 +24,7 @@ export default function LoginForm({ next }: { next?: string }) {
     const supabase = createSupabaseBrowserClient();
     const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
     if (signInError) {
-      setError("Incorrect username or password.");
+      setError("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
       setBusy(false);
       return;
     }
@@ -43,7 +43,7 @@ export default function LoginForm({ next }: { next?: string }) {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-1">
-        <label className="block text-sm font-medium text-slate-300">Username</label>
+        <label className="block text-sm font-semibold text-slate-300">ชื่อผู้ใช้</label>
         <input
           type="text"
           required
@@ -57,7 +57,7 @@ export default function LoginForm({ next }: { next?: string }) {
         />
       </div>
       <div className="space-y-1">
-        <label className="block text-sm font-medium text-slate-300">Password</label>
+        <label className="block text-sm font-semibold text-slate-300">รหัสผ่าน</label>
         <input
           type="password"
           required
@@ -75,9 +75,9 @@ export default function LoginForm({ next }: { next?: string }) {
       <button
         type="submit"
         disabled={busy}
-        className="w-full rounded-lg bg-indigo-500 px-4 py-2.5 font-semibold text-white shadow shadow-indigo-500/20 transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full rounded-lg bg-indigo-500 px-4 py-2.5 text-lg font-bold text-white shadow shadow-indigo-500/20 transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {busy ? "Signing in…" : "Sign in"}
+        {busy ? "กำลังเข้าสู่ระบบ…" : "เข้าสู่ระบบ"}
       </button>
     </form>
   );
